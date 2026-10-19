@@ -33,3 +33,6 @@ _site/
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# tasteskill working files (screenshots, direction sheets)
+.taste-skill/

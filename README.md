@@ -14,6 +14,8 @@ A single-file Kanban board for tracking IT PMO project tasks, built as an intern
 
 **Live demo:** https://wongmp.github.io/ClaudeOct26/
 
+**Version 2 (redesign with status pie and due-date line charts):** https://wongmp.github.io/ClaudeOct26/v2/
+
 > Demo mode: the board is held in memory only. Refreshing the page resets it to the sample tasks.
 
 ## Features

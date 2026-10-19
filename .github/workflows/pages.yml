@@ -26,6 +26,8 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/site"
           cp index.html "$RUNNER_TEMP/site/"
+          mkdir -p "$RUNNER_TEMP/site/v2"
+          cp v2/index.html "$RUNNER_TEMP/site/v2/"
           touch "$RUNNER_TEMP/site/.nojekyll"
 
       - name: Publish to gh-pages

@@ -28,6 +28,8 @@ jobs:
           cp index.html "$RUNNER_TEMP/site/"
           mkdir -p "$RUNNER_TEMP/site/v2"
           cp v2/index.html "$RUNNER_TEMP/site/v2/"
+          mkdir -p "$RUNNER_TEMP/site/.claude/hooks"
+          cp .claude/hooks/security-briefing-popup.js "$RUNNER_TEMP/site/.claude/hooks/"
           touch "$RUNNER_TEMP/site/.nojekyll"
 
       - name: Publish to gh-pages

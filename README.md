@@ -97,7 +97,7 @@ FormSubmit sends a one-time activation email to that address the first time the 
 ## CI/CD
 
 - **CI** (`ci.yml`) runs on every push and pull request to `main`. It lints `index.html` with HTMLHint and scans the full git history for secrets with Gitleaks.
-- **Deploy GitHub Pages** (`pages.yml`) runs on every push to `main` and on demand. It publishes `index.html` to https://wongmp.github.io/ClaudeOct26/.
+- **Deploy GitHub Pages** (`pages.yml`) runs on every push to `main` and on demand. It copies `index.html` to the `gh-pages` branch, which GitHub Pages serves at https://wongmp.github.io/ClaudeOct26/.
 - **Dependabot** checks weekly for updates to the GitHub Actions used.
 
 ## Contributing

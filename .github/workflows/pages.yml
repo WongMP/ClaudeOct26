@@ -1,39 +1,45 @@
 name: Deploy GitHub Pages
 
+# The site is served from the gh-pages branch (Settings → Pages → Deploy from a branch).
+# This workflow publishes index.html from main to gh-pages; GitHub's built-in
+# "pages build and deployment" run then puts it live.
+
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
+
       - name: Assemble site
         run: |
-          mkdir -p _site
-          cp index.html _site/
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
+          mkdir -p "$RUNNER_TEMP/site"
+          cp index.html "$RUNNER_TEMP/site/"
+          touch "$RUNNER_TEMP/site/.nojekyll"
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Publish to gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin gh-pages
+          git checkout gh-pages
+          git rm -rq --ignore-unmatch .
+          cp -a "$RUNNER_TEMP/site/." .
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Site unchanged; nothing to publish."
+          else
+            git commit -m "Deploy ${GITHUB_SHA::7} from main"
+            git push origin gh-pages
+          fi

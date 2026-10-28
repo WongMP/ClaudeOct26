@@ -18,6 +18,16 @@ A single-file Kanban board for tracking IT PMO project tasks, built as an intern
 
 > Demo mode: the board is held in memory only. Refreshing the page resets it to the sample tasks.
 
+## Screenshots
+
+**Version 1: Kanban board**
+
+![IT PMO Kanban board, version 1](docs/screenshots/v1-board.png)
+
+**Version 2: redesign with status pie and due-date line charts**
+
+![IT PMO project board, version 2](docs/screenshots/v2-dashboard.png)
+
 ## Features
 
 - Four columns: **Backlog**, **In Progress**, **Blocked** and **Done**

@@ -56,7 +56,7 @@ The goal is that no secrets, credentials, private data or junk files reach the i
 
 ## Step 3: Create or update README.md
 
-Read the codebase first: package manifests, entry points, scripts, Dockerfile, existing docs. Base everything on what the project actually does and never invent features. If a README already exists, keep any accurate content the user wrote and improve it rather than discarding it.
+Read `CLAUDE.md` if present and respect its constraints (for example no build step, and no real bank logo or branding). Read the codebase first: package manifests, entry points, scripts, Dockerfile, existing docs. Base everything on what the project actually does and never invent features. If a README already exists, keep any accurate content the user wrote and improve it rather than discarding it.
 
 The README must contain:
 - **Title and a one-line tagline.**
@@ -79,7 +79,7 @@ The README must contain:
 
 ## Step 4: Automate CI/CD with GitHub Actions
 
-Create the following under `.github/workflows/`, tailored to the detected stack.
+First check whether `.github/workflows/ci.yml` and `pages.yml` already exist. **If they do, keep them.** Validate them and extend them only where something is missing (for example a secret-scan job), and never replace a working workflow. Create the workflows below only when none exist, tailored to the detected stack.
 
 **`ci.yml`**
 - Triggers: `push` and `pull_request` on `<branch>`.
@@ -102,8 +102,9 @@ Never put secrets in workflow files. If the workflows need any, tell the user wh
 1. Decide what the site shows:
    - If the project is a static site or frontend app (React, Vite, Next export, Astro, plain HTML), deploy its build output. Set the base path to `/<repo>/` where the framework needs one, for example `base` in Vite or `basePath` in Next.
    - Otherwise, create a clean, responsive landing page in `docs/index.html`. It should cover the project overview, features, tech badges, install and run steps, and a link back to the repo. Upload `docs/` as the artifact.
-2. Enable Pages with the Actions build type:
-   `gh api -X POST repos/<owner>/<repo>/pages -f build_type=workflow`. If Pages already exists, use `-X PUT` instead.
+2. Enable Pages.
+   - If an existing `pages.yml` publishes to a `gh-pages` branch, serve from that branch: `gh api -X POST repos/<owner>/<repo>/pages -f "source[branch]=gh-pages" -f "source[path]=/"` (use `-X PUT` if Pages already exists). Remind the user that any new file the site needs must be added to the workflow's "Assemble site" step.
+   - Otherwise use the Actions build type: `gh api -X POST repos/<owner>/<repo>/pages -f build_type=workflow` (again `-X PUT` if Pages exists).
    - Pages on a **private** repo needs a paid plan. If this call fails for that reason, tell the user and ask whether to make the repo public or skip Pages.
 3. Commit and push the workflows and site, then watch the run with `gh run watch`. If it fails, read `gh run view --log-failed`, fix it and push again.
 4. Confirm that the site is live: `curl -sI https://<owner>.github.io/<repo>/` should return 200.

@@ -36,3 +36,4 @@ _site/
 
 # tasteskill working files (screenshots, direction sheets)
 .taste-skill/
+.playwright-mcp/

@@ -59,7 +59,7 @@
 
   /* Dense spacing scale (8–32px) */
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px;
-  --radius-sm: 4px; --radius: 6px; --radius-lg: 8px;
+  --radius-sm: 4px; --radius: 8px; --radius-lg: 14px;
   --shadow-card: 0 1px 2px rgba(15, 23, 42, .06), 0 1px 1px rgba(15, 23, 42, .04);
   --shadow-raise: 0 4px 12px rgba(15, 23, 42, .10);
   --shadow-modal: 0 20px 48px rgba(2, 6, 23, .28);
@@ -133,26 +133,58 @@ button, select, [draggable="true"] { cursor: pointer; }
 .icon-btn:hover { background: var(--muted); color: var(--fg); }
 .icon-btn.danger:hover { background: var(--critical-bg); color: var(--critical-fg); }
 
-/* ===== Header: wordmark + KPI strip ===== */
-.app-header { background: var(--header-bg); color: var(--header-fg); }
-.header-inner { max-width: 1600px; margin: 0 auto; padding: var(--s-4) var(--s-5); display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4) var(--s-5); }
-.brand { display: flex; align-items: center; gap: var(--s-3); margin-right: auto; }
-.brand-mark { width: 32px; height: 32px; border-radius: var(--radius); background: var(--blue-800); display: grid; place-items: center; }
+/* ===== Hero: editorial control-room header ===== */
+.app-header { position: relative; overflow: hidden; background: var(--header-bg); color: var(--header-fg); isolation: isolate; }
+.app-header::before { content: ""; position: absolute; inset: 0; z-index: -2; background:
+  radial-gradient(900px 420px at 85% -10%, rgba(37, 99, 235, .45), transparent 60%),
+  radial-gradient(600px 360px at 0% 110%, rgba(202, 138, 4, .20), transparent 60%); }
+.app-header::after { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .5;
+  background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size: 40px 40px; -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 85%); mask-image: linear-gradient(180deg, #000 0%, transparent 85%); }
+.header-inner { max-width: 1600px; margin: 0 auto; padding: var(--s-5) var(--s-5) var(--s-4); display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: var(--s-5) var(--s-6); align-items: center; }
+.hero-copy { display: flex; flex-direction: column; gap: var(--s-4); align-items: flex-start; }
+.brand { display: flex; align-items: center; gap: var(--s-3); }
+.brand-mark { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--blue-600), var(--blue-800)); display: grid; place-items: center; box-shadow: 0 0 0 1px rgba(255,255,255,.18) inset, 0 6px 18px rgba(37, 99, 235, .45); }
 .brand-mark svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; }
-.wordmark { font-size: var(--fs-xl); font-weight: 700; letter-spacing: .01em; line-height: 1.1; }
+.wordmark { font-size: var(--fs-lg); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; line-height: 1.1; }
 .brand-sub { font-size: var(--fs-xs); color: var(--header-muted); letter-spacing: .06em; text-transform: uppercase; }
+.hero-title { font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; font-weight: 600; font-size: clamp(32px, 4.6vw, 58px); line-height: 1.04; letter-spacing: -.02em; max-width: 14ch; }
+.hero-title em { font-style: italic; color: #fbbf24; }
+.hero-lede { font-size: var(--fs-lg); color: var(--header-muted); max-width: 46ch; line-height: 1.55; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: var(--s-3); align-items: center; }
+a.btn { text-decoration: none; }
+.btn-ghost { background: transparent; color: var(--header-fg); border-color: var(--header-chip-border); }
+.btn-ghost:hover { background: var(--header-chip); }
+.header-inner .btn-accent { min-height: 44px; padding: 0 var(--s-5); border-radius: 999px; box-shadow: 0 8px 24px rgba(202, 138, 4, .35); }
+.header-inner .btn-accent:hover:not(:disabled) { transform: translateY(-1px); }
+.btn { transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
 
-.kpis { display: flex; flex-wrap: wrap; gap: var(--s-2); list-style: none; margin: 0; padding: 0; }
-.kpi { display: flex; flex-direction: column; min-width: 84px; padding: 6px var(--s-3); border: 1px solid var(--header-chip-border); background: var(--header-chip); border-radius: var(--radius); }
-.kpi-label { display: flex; align-items: center; gap: 6px; font-size: var(--fs-xs); color: var(--header-muted); white-space: nowrap; }
-.kpi-value { font-size: var(--fs-lg); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.3; }
-.kpi .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dot); }
-.kpi.is-alert { border-color: rgba(248, 113, 113, .6); background: rgba(220, 38, 38, .22); }
+/* Hero visual: a miniature board whose cards drift between lanes (decorative) */
+.hero-art { width: 100%; height: auto; max-height: 300px; filter: drop-shadow(0 24px 40px rgba(2, 6, 23, .5)); }
+.hero-art .lane { fill: rgba(255,255,255,.05); stroke: rgba(255,255,255,.12); }
+.hero-art .lane-label { fill: rgba(203, 213, 225, .8); font: 600 9px var(--font); letter-spacing: .12em; text-transform: uppercase; }
+.hero-art .tile { fill: #f8fafc; }
+.hero-art .tile-bar { fill: var(--c); }
+.hero-art .tile-line { fill: #cbd5e1; }
+.hero-art .hero-card { animation: drift var(--t, 9s) var(--ease) infinite; animation-delay: var(--d, 0s); }
+@keyframes drift {
+  0%, 12%   { transform: translateX(0); }
+  38%, 62%  { transform: translateX(var(--dx)); }
+  88%, 100% { transform: translateX(0); }
+}
+
+.kpis { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-3); list-style: none; margin: 0; padding: 0; }
+.kpi { position: relative; display: flex; flex-direction: column; min-width: 0; padding: var(--s-3) var(--s-4); border: 1px solid var(--header-chip-border); background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.03)); border-radius: var(--radius-lg); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+.kpi:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.3); }
+.kpi-label { display: flex; align-items: center; gap: 6px; font-size: var(--fs-xs); color: var(--header-muted); white-space: nowrap; text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
+.kpi-value { font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; font-size: 34px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.15; }
+.kpi .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dot); box-shadow: 0 0 10px var(--dot); }
+.kpi.is-alert { border-color: rgba(248, 113, 113, .7); background: linear-gradient(180deg, rgba(220, 38, 38, .38), rgba(220, 38, 38, .12)); }
 
 /* Distribution bar: status mix at a glance (labels carry the numbers) */
-.mix { max-width: 1600px; margin: 0 auto; padding: 0 var(--s-5) var(--s-4); }
-.mix-bar { display: flex; height: 6px; border-radius: 999px; overflow: hidden; background: var(--header-chip); }
-.mix-bar span { display: block; height: 100%; background: var(--seg); transition: flex-grow var(--dur) var(--ease); }
+.mix { max-width: 1600px; margin: 0 auto; padding: 0 var(--s-5) var(--s-5); }
+.mix-bar { display: flex; gap: 3px; height: 8px; border-radius: 999px; overflow: hidden; background: var(--header-chip); }
+.mix-bar span { display: block; height: 100%; background: var(--seg); border-radius: 999px; transition: flex-grow 500ms var(--ease); }
 
 /* ===== Toolbar: filters ===== */
 .toolbar { background: var(--surface); border-bottom: 1px solid var(--border); }
@@ -171,9 +203,10 @@ button, select, [draggable="true"] { cursor: pointer; }
 /* ===== Board ===== */
 main { max-width: 1600px; margin: 0 auto; padding: var(--s-4) var(--s-5) var(--s-6); }
 .board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-4); align-items: start; }
-.column { display: flex; flex-direction: column; background: var(--surface-sunken); border: 1px solid var(--border); border-radius: var(--radius-lg); min-height: 240px; transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); }
+.column { position: relative; overflow: hidden; display: flex; flex-direction: column; background: var(--surface-sunken); border: 1px solid var(--border); border-radius: var(--radius-lg); min-height: 240px; transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); }
+.column::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--dot); }
 .column.drop-target { background: var(--primary-soft); border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
-.column-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-2); padding: var(--s-3) var(--s-3) var(--s-2); border-bottom: 1px solid var(--border); }
+.column-head { padding-top: calc(var(--s-3) + 3px) !important; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-2); padding: var(--s-3) var(--s-3) var(--s-2); border-bottom: 1px solid var(--border); }
 .column-title:focus { outline: none; }
 .column-title:focus-visible { outline: 2px solid var(--ring); }
 .column-title { display: flex; align-items: center; gap: var(--s-2); font-size: var(--fs-md); font-weight: 700; }
@@ -184,8 +217,8 @@ main { max-width: 1600px; margin: 0 auto; padding: var(--s-4) var(--s-5) var(--s
 .empty { display: grid; place-items: center; gap: var(--s-1); padding: var(--s-5) var(--s-3); border: 1px dashed var(--border-strong); border-radius: var(--radius); color: var(--fg-muted); font-size: var(--fs-sm); text-align: center; }
 
 /* ===== Cards ===== */
-.card { position: relative; background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--prio); border-radius: var(--radius); padding: var(--s-3); box-shadow: var(--shadow-card); transition: box-shadow var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
-.card:hover { box-shadow: var(--shadow-raise); }
+.card { position: relative; will-change: transform; background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--prio); border-radius: var(--radius); padding: var(--s-3); box-shadow: var(--shadow-card); transition: box-shadow var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+.card:hover { box-shadow: var(--shadow-raise); transform: translateY(-2px); }
 .card.dragging { opacity: .5; }
 .card[data-priority="Critical"] { --prio: var(--critical); }
 .card[data-priority="High"]     { --prio: var(--high); }
@@ -250,16 +283,28 @@ dialog.modal[open] { animation: modal-in var(--dur) var(--ease); }
 .toast.warn .icon { color: var(--warning); }
 @keyframes toast-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
+
+/* ===== Motion: staged entrance + feedback (all disabled under reduced motion) ===== */
+.rise { animation: rise 600ms var(--ease) both; animation-delay: var(--delay, 0ms); }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.card.flash { animation: flash 900ms var(--ease); }
+@keyframes flash { 0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, .55); } 60% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); } 100% { box-shadow: var(--shadow-card); } }
+.toolbar { position: sticky; top: 0; z-index: 20; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); background: color-mix(in srgb, var(--surface) 88%, transparent); }
+
 /* ===== Responsive ===== */
 @media (max-width: 1099px) {
+  .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 767px) {
   .board { grid-template-columns: minmax(0, 1fr); }
   .header-inner, .toolbar-inner, main, .mix { padding-left: var(--s-4); padding-right: var(--s-4); }
-  .brand { margin-right: 0; width: 100%; }
-  .header-inner > .btn { width: 100%; }
-  .kpi { min-width: 0; flex: 1 1 calc(33% - var(--s-2)); }
+  .header-inner { grid-template-columns: 1fr; }
+  .hero-art { max-height: 220px; }
+  .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .kpi-value { font-size: 28px; }
+  .kpi { padding: var(--s-2) var(--s-3); }
+  .kpi-label { letter-spacing: .04em; font-size: 11px; overflow: hidden; text-overflow: ellipsis; }
   .filter, .control { width: 100%; min-width: 0; }
   .toolbar-meta { margin-left: 0; align-items: flex-start; }
   .grid-2 { grid-template-columns: 1fr; }
@@ -268,7 +313,8 @@ dialog.modal[open] { animation: modal-in var(--dur) var(--ease); }
 /* Reduced motion: zero the duration tokens and drop entrance animations */
 @media (prefers-reduced-motion: reduce) {
   :root { --dur-fast: 0ms; --dur: 0ms; }
-  dialog.modal[open], .toast { animation: none; }
+  dialog.modal[open], .toast, .rise, .card.flash, .hero-art .hero-card { animation: none; }
+  .card:hover, .kpi:hover { transform: none; }
 }
 </style>
 </head>
@@ -297,17 +343,37 @@ dialog.modal[open] { animation: modal-in var(--dur) var(--ease); }
 <!-- ===== Header: wordmark, live KPI strip, add button ===== -->
 <header class="app-header">
   <div class="header-inner">
-    <div class="brand">
-      <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 5v14M12 5v9M18 5v5"/></svg></div>
-      <div>
-        <h1 class="wordmark">IT PMO</h1>
-        <p class="brand-sub">Project Kanban · Training demo</p>
+    <div class="hero-copy">
+      <div class="brand rise" style="--delay:0ms">
+        <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 5v14M12 5v9M18 5v5"/></svg></div>
+        <div>
+          <p class="wordmark">IT PMO</p>
+          <p class="brand-sub">Project Kanban · Training demo</p>
+        </div>
+      </div>
+      <h1 class="hero-title rise" style="--delay:80ms">Every project, <em>one</em> clear board.</h1>
+      <p class="hero-lede rise" style="--delay:160ms">Track delivery across core banking, digital, security, data and cloud. See what is moving, what is blocked and what is overdue, at a glance.</p>
+      <div class="hero-actions rise" style="--delay:240ms">
+        <button type="button" class="btn btn-accent" id="openAdd">
+          <svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add Task
+        </button>
+        <a class="btn btn-ghost" href="#boardMain">View board</a>
+        <a class="btn btn-ghost" href="assets/hero.mp4" target="_blank" rel="noopener">Watch 12s intro</a>
       </div>
     </div>
+    <svg class="hero-art rise" style="--delay:200ms" viewBox="0 0 480 280" role="img" aria-label="Illustration of task cards moving across Backlog, In Progress and Done lanes">
+      <g>
+        <rect class="lane" x="8" y="8" width="148" height="264" rx="12"/><text class="lane-label" x="22" y="32">Backlog</text>
+        <rect class="lane" x="166" y="8" width="148" height="264" rx="12"/><text class="lane-label" x="180" y="32">In progress</text>
+        <rect class="lane" x="324" y="8" width="148" height="264" rx="12"/><text class="lane-label" x="338" y="32">Done</text>
+      </g>
+      <g class="hero-card" style="--dx:158px;--t:10s;--d:0s"><g transform="translate(20 48)"><rect class="tile" width="124" height="56" rx="8"/><rect class="tile-bar" style="--c:#2563eb" width="5" height="56" rx="2"/><rect class="tile-line" x="16" y="14" width="84" height="6" rx="3"/><rect class="tile-line" x="16" y="30" width="56" height="6" rx="3"/></g></g>
+      <g class="hero-card" style="--dx:158px;--t:12s;--d:-3s"><g transform="translate(178 116)"><rect class="tile" width="124" height="56" rx="8"/><rect class="tile-bar" style="--c:#16a34a" width="5" height="56" rx="2"/><rect class="tile-line" x="16" y="14" width="70" height="6" rx="3"/><rect class="tile-line" x="16" y="30" width="92" height="6" rx="3"/></g></g>
+      <g class="hero-card" style="--dx:-158px;--t:11s;--d:-6s"><g transform="translate(178 48)"><rect class="tile" width="124" height="56" rx="8"/><rect class="tile-bar" style="--c:#dc2626" width="5" height="56" rx="2"/><rect class="tile-line" x="16" y="14" width="96" height="6" rx="3"/><rect class="tile-line" x="16" y="30" width="48" height="6" rx="3"/></g></g>
+      <g class="hero-card" style="--dx:0px;--t:9s"><g transform="translate(20 116)"><rect class="tile" width="124" height="56" rx="8"/><rect class="tile-bar" style="--c:#d97706" width="5" height="56" rx="2"/><rect class="tile-line" x="16" y="14" width="64" height="6" rx="3"/><rect class="tile-line" x="16" y="30" width="80" height="6" rx="3"/></g></g>
+      <g transform="translate(336 48)"><rect class="tile" width="124" height="56" rx="8" opacity=".85"/><rect class="tile-bar" style="--c:#16a34a" width="5" height="56" rx="2"/><rect class="tile-line" x="16" y="14" width="88" height="6" rx="3"/><rect class="tile-line" x="16" y="30" width="60" height="6" rx="3"/></g>
+    </svg>
     <ul class="kpis" id="summary" aria-label="Board summary"></ul>
-    <button type="button" class="btn btn-accent" id="openAdd">
-      <svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add Task
-    </button>
   </div>
   <div class="mix"><div class="mix-bar" id="mixBar" aria-hidden="true"></div></div>
 </header>
@@ -339,7 +405,7 @@ dialog.modal[open] { animation: modal-in var(--dur) var(--ease); }
 </section>
 
 <!-- ===== Board ===== -->
-<main>
+<main id="boardMain">
   <h2 class="visually-hidden">Kanban board</h2>
   <div class="board" id="board"></div>
 </main>
@@ -433,7 +499,10 @@ const PRIORITY_RANK = { Critical: 0, High: 1, Medium: 2, Low: 3 };
 const state = { tasks: [], filters: { project: "", assignee: "", priority: "" } };
 let idCounter = 0;
 /* Transient UI state (which card shows delete-confirm / move menu) */
-const ui = { confirmId: null, moveId: null, focus: null };
+const ui = { confirmId: null, moveId: null, focus: null, flash: null };
+const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let firstRender = true;
+const prevKpi = {};
 
 /* ===== Helpers ===== */
 function escapeHtml(value) {
@@ -574,6 +643,27 @@ function renderSummary() {
     kpi("Overdue", od, { alert: od > 0, icon: "i-alert" });
   document.getElementById("mixBar").innerHTML = STATUSES.map((s, i) =>
     counts[i] ? `<span style="flex-grow:${counts[i]};--seg:${STATUS_COLOR[s]}"></span>` : "").join("");
+  animateKpis();
+}
+
+/* KPI numbers count up from their previous value (skipped for reduced motion) */
+function animateKpis() {
+  document.querySelectorAll("#summary .kpi").forEach(el => {
+    const label = el.querySelector(".kpi-label").textContent.trim();
+    const out = el.querySelector(".kpi-value");
+    const to = Number(out.textContent);
+    const from = prevKpi[label] == null ? 0 : prevKpi[label];
+    prevKpi[label] = to;
+    if (REDUCED || from === to) return;
+    const t0 = performance.now(), dur = 700;
+    const step = now => {
+      const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      out.textContent = Math.round(from + (to - from) * e);
+      if (k < 1) requestAnimationFrame(step); else out.textContent = to;
+    };
+    out.textContent = from;
+    requestAnimationFrame(step);
+  });
 }
 
 /* ===== renderBoard(): the only place card DOM is built ===== */
@@ -600,6 +690,15 @@ function renderBoard() {
     ? `Showing ${visible.length} of ${plural(state.tasks.length, "task")}`
     : plural(state.tasks.length, "task");
   renderSummary();
+  if (firstRender) {
+    document.querySelectorAll("#board .card").forEach((c, i) => { c.classList.add("rise"); c.style.setProperty("--delay", 300 + i * 70 + "ms"); });
+    firstRender = false;
+  }
+  if (ui.flash) {
+    const el = document.querySelector(`.card[data-id="${ui.flash.replace(/"/g, "")}"]`);
+    if (el) el.classList.add("flash");
+    ui.flash = null;
+  }
   if (ui.focus) {
     const el = document.querySelector(ui.focus);
     if (el) el.focus();
@@ -613,6 +712,7 @@ function moveTask(id, status) {
   ui.moveId = null;
   if (task && STATUSES.includes(status) && task.status !== status) {
     task.status = status;
+    ui.flash = task.id;
     renderBoard();
     const n = state.tasks.filter(t => t.status === status).length;
     announce(`${task.id} moved to ${status}. ${status} now has ${plural(n, "task")}.`);
@@ -637,6 +737,7 @@ function addTask(data) {
     dueDate: data.dueDate, status: data.status
   };
   state.tasks.push(task);
+  ui.flash = task.id;
   renderBoard();
   return task;
 }

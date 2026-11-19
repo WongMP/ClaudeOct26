@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root { --ground: #0f172a; --ink: #f8fafc; --muted: #cbd5e1; --gold: #fbbf24; --blue: #2563eb; --red: #dc2626; --green: #16a34a; --amber: #d97706; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); }
+      #root { position: relative; width: 100%; height: 100%; font-family: "Inter", sans-serif; color: var(--ink); overflow: hidden;
+        background: radial-gradient(1100px 600px at 85% 0%, rgba(37,99,235,.45), transparent 60%), radial-gradient(800px 500px at 0% 100%, rgba(202,138,4,.22), transparent 60%), var(--ground); }
+      .grid { position: absolute; inset: 0; opacity: .5; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 80px 80px; }
+      .brand { position: absolute; left: 144px; top: 96px; font-weight: 700; font-size: 28px; letter-spacing: .22em; }
+      .title { position: absolute; left: 144px; top: 240px; width: 900px; font-family: "Playfair Display", serif; font-weight: 700; font-size: 128px; line-height: 1.05; letter-spacing: -.02em; }
+      .title em { color: var(--gold); font-style: italic; }
+      .lede { position: absolute; left: 144px; top: 640px; width: 760px; font-size: 34px; line-height: 1.5; color: var(--muted); }
+      .lane { position: absolute; top: 200px; width: 230px; height: 640px; border-radius: 22px; background: rgba(255,255,255,.05); border: 2px solid rgba(255,255,255,.12); }
+      .lane span { position: absolute; left: 24px; top: 22px; font-size: 20px; font-weight: 700; letter-spacing: .14em; color: var(--muted); }
+      .tile { position: absolute; width: 190px; height: 110px; border-radius: 14px; background: #f8fafc; box-shadow: 0 20px 40px rgba(2,6,23,.45); }
+      .tile i { position: absolute; left: 0; top: 0; bottom: 0; width: 10px; border-radius: 6px 0 0 6px; background: var(--c); }
+      .tile b { position: absolute; left: 30px; height: 12px; border-radius: 6px; background: #cbd5e1; }
+      .kpis { position: absolute; left: 144px; right: 144px; top: 330px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+      .kpi { padding: 44px; border-radius: 28px; border: 2px solid rgba(255,255,255,.16); background: rgba(255,255,255,.07); }
+      .kpi.alert { border-color: rgba(248,113,113,.8); background: rgba(220,38,38,.3); }
+      .kpi p { font-size: 26px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+      .kpi strong { display: block; margin-top: 16px; font-family: "Playfair Display", serif; font-size: 190px; line-height: 1; }
+      .heading { position: absolute; left: 144px; top: 150px; font-family: "Playfair Display", serif; font-size: 84px; font-weight: 700; }
+      .cta { position: absolute; left: 0; right: 0; top: 330px; text-align: center; }
+      .cta h2 { font-family: "Playfair Display", serif; font-size: 120px; font-weight: 700; letter-spacing: -.02em; }
+      .cta .btn { display: inline-block; margin-top: 64px; padding: 28px 64px; border-radius: 999px; background: #ca8a04; color: #fff; font-size: 40px; font-weight: 700; box-shadow: 0 20px 50px rgba(202,138,4,.4); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="12" data-width="1920" data-height="1080">
+      <div class="grid"></div>
+      <div class="brand">IT PMO</div>
+
+      <!-- Scene 1: 0-4s -->
+      <div id="s1" class="clip" data-start="0" data-duration="4" data-track-index="0" style="position:absolute;inset:0">
+        <h1 class="title" id="s1-title">Every project, <em>one</em> clear board.</h1>
+        <p class="lede" id="s1-lede">Track delivery across core banking, digital, security, data and cloud.</p>
+        <div class="lane" id="l1" style="left:1060px"><span>BACKLOG</span></div>
+        <div class="lane" id="l2" style="left:1310px"><span>IN PROGRESS</span></div>
+        <div class="lane" id="l3" style="left:1560px"><span>DONE</span></div>
+        <div class="tile" id="t1" style="left:1080px;top:270px;--c:var(--blue)"><i></i><b style="top:30px;width:110px"></b><b style="top:62px;width:70px"></b></div>
+        <div class="tile" id="t2" style="left:1080px;top:410px;--c:var(--amber)"><i></i><b style="top:30px;width:90px"></b><b style="top:62px;width:110px"></b></div>
+        <div class="tile" id="t3" style="left:1330px;top:270px;--c:var(--red)"><i></i><b style="top:30px;width:120px"></b><b style="top:62px;width:60px"></b></div>
+      </div>
+
+      <!-- Scene 2: 4-8s -->
+      <div id="s2" class="clip" data-start="4" data-duration="4" data-track-index="0" style="position:absolute;inset:0">
+        <h2 class="heading" id="s2-head">See what is moving, blocked, overdue.</h2>
+        <div class="kpis">
+          <div class="kpi" id="k1"><p>Total tasks</p><strong id="n1">0</strong></div>
+          <div class="kpi" id="k2"><p>Blocked</p><strong id="n2">0</strong></div>
+          <div class="kpi alert" id="k3"><p>Overdue</p><strong id="n3">0</strong></div>
+        </div>
+      </div>
+
+      <!-- Scene 3: 8-12s -->
+      <div id="s3" class="clip" data-start="8" data-duration="4" data-track-index="0" style="position:absolute;inset:0">
+        <div class="cta"><h2 id="s3-h">Ship with clarity.</h2><div class="btn" id="s3-btn">Open the board</div></div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out";
+      // Scene 1
+      tl.fromTo("#s1-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: E }, 0.2)
+        .fromTo("#s1-lede", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: E }, 0.6)
+        .fromTo(".lane", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.12, ease: E }, 0.4)
+        .fromTo(".tile", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.15, ease: E }, 1.0)
+        .to("#t1", { x: 250, duration: 0.9, ease: "power2.inOut" }, 1.8)
+        .to("#t2", { x: 250, y: -140, duration: 0.9, ease: "power2.inOut" }, 2.3)
+        .to("#t3", { x: 250, duration: 0.9, ease: "power2.inOut" }, 2.8)
+        .to("#s1", { opacity: 0, duration: 0.3, ease: "power2.in" }, 3.65);
+      // Scene 2 (local to composition time: starts at 4)
+      tl.fromTo("#s2-head", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: E }, 4.1)
+        .fromTo(".kpi", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: E }, 4.5);
+      const c = { a: 0, b: 0, d: 0 };
+      tl.to(c, { a: 8, b: 2, d: 2, duration: 1.6, ease: "power2.out", onUpdate() {
+        document.getElementById("n1").textContent = Math.round(c.a);
+        document.getElementById("n2").textContent = Math.round(c.b);
+        document.getElementById("n3").textContent = Math.round(c.d);
+      } }, 4.8)
+        .to("#s2", { opacity: 0, duration: 0.3, ease: "power2.in" }, 7.65);
+      // Scene 3
+      tl.fromTo("#s3-h", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.8, ease: E }, 8.2)
+        .fromTo("#s3-btn", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: E }, 8.9);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
